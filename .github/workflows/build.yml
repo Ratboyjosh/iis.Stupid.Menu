@@ -1,0 +1,31 @@
+name: Build DLL
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '4.7.2'
+
+      - name: Build project
+        run: |
+          msbuild YourProject.csproj /p:Configuration=Release
+
+      - name: Upload DLL
+        uses: actions/upload-artifact@v4
+        with:
+          name: Built DLL
+          path: |
+            **/bin/Release/*.dll
